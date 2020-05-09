@@ -19,7 +19,7 @@ class TextCNN(tf.keras.Model):
         self.concat = tf.keras.layers.Concatenate()
         self.dense1 = tf.keras.layers.Dense(10, activation='relu')
         self.dropout = tf.keras.layers.Dropout(0.2)
-        self.logits = tf.keras.layers.Dense(num_class, activation='softmax')
+        self.dense2 = tf.keras.layers.Dense(num_class, activation='softmax')
 
     def call(self, inputs, training=None):
         embed = self.embed(inputs)
@@ -32,7 +32,7 @@ class TextCNN(tf.keras.Model):
         x = self.dense1(x)
         if training:
             x = self.dropout(x)
-        x = self.logits(x)
+        x = self.dense2(x)
         return x
 
 
