@@ -21,7 +21,7 @@ class TextCNN(tf.keras.Model):
         self.dropout = tf.keras.layers.Dropout(0.2)
         self.logits = tf.keras.layers.Dense(num_class, activation='softmax')
 
-    def call(self, inputs):
+    def call(self, inputs, training=None):
         embed = self.embed(inputs)
         convs = []
         for conv, pool in self.convpool:
@@ -71,7 +71,7 @@ for epoch in range(epochs):
     # 遍历数据集的所有batch
     for step, (x_batch_train, y_batch_train) in enumerate(train_dataset):
         with tf.GradientTape() as tape:
-            logits = model(x_batch_train)
+            logits = model(x_batch_train, training=True)
             # 计算损失
             loss = loss_fn(y_batch_train, logits)
 
@@ -87,7 +87,7 @@ for epoch in range(epochs):
 
     # 运行测试集，打印test_acc
     for x_batch_test, y_batch_test in test_dataset:
-        test_logits = model(x_batch_test)
+        test_logits = model(x_batch_test, training=False)
         # 更新 test metrics
         test_acc_metric(y_batch_test, test_logits)
     test_acc = test_acc_metric.result()
