@@ -30,7 +30,8 @@ class TextCNN(tf.keras.Model):
             convs.append(x)
         x = self.concat(convs)
         x = self.dense1(x)
-        x = self.dropout(x)
+        if training:
+            x = self.dropout(x)
         x = self.logits(x)
         return x
 
